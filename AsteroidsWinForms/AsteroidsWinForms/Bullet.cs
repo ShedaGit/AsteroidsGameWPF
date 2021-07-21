@@ -10,11 +10,16 @@ namespace AsteroidsWinForms
 {
     class Bullet : BaseObject
     {
-        public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size) { }
+        private Bitmap _bitmap;
+
+        public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size)
+        {
+            _bitmap = Resources.laserRed1;
+        }
 
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.laserRed1, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+            Game.Buffer.Graphics.DrawImage(_bitmap, Pos.X, Pos.Y);
         }
 
         public override void Update()

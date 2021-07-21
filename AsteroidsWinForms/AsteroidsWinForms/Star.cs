@@ -10,11 +10,16 @@ namespace AsteroidsWinForms
 {
     class Star : BaseObject
     {
-        public Star(Point pos, Point dir, Size size) : base(pos, dir, size) { }
+        private readonly Bitmap _bitmap;
+
+        public Star(Point pos, Point dir, Size size) : base(pos, dir, size)
+        {
+            _bitmap = Resources.star3;
+        }
 
         public override void Draw()
         {
-            Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.star3, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+            Game.Buffer.Graphics.DrawImage(_bitmap, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         public override void Update()

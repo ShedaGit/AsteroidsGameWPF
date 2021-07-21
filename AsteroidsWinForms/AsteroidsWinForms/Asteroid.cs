@@ -10,30 +10,32 @@ namespace AsteroidsWinForms
 {
     class Asteroid : BaseObject
     {
+        private readonly Bitmap _bitmap;
         private int index;
         static Random r = new Random();
         public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            index = r.Next(1, 4);
+            index = r.Next(1, 5);
+            switch (index)
+            {
+                case 1:
+                    _bitmap = Resources.asteroid1;
+                    break;
+                case 2:
+                    _bitmap = Resources.asteroid2;
+                    break;
+                case 3:
+                    _bitmap = Resources.asteroid3;
+                    break;
+                case 4:
+                    _bitmap = Resources.asteroid4;
+                    break;
+            }
         }
 
         override public void Draw()
         {
-            switch (index)
-            {
-                case 1:
-                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid1, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
-                    break;
-                case 2:
-                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid2, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
-                    break;
-                case 3:
-                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid3, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
-                    break;
-                case 4:
-                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid4, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
-                    break;
-            }
+            Game.Buffer.Graphics.DrawImage(_bitmap, Pos.X, Pos.Y, Size.Width, Size.Height);
         }
 
         public override void Update()

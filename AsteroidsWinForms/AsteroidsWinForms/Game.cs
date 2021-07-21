@@ -16,6 +16,8 @@ namespace AsteroidsWinForms
         static Bullet _bullet;
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
+        private static Bitmap _backgroundBitmap;
+        private static Bitmap _planetBitmap;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
@@ -55,12 +57,12 @@ namespace AsteroidsWinForms
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
-            Buffer.Graphics.DrawImage(new Bitmap(Resources.background, new Size(800, 500)), 0, 0);
+            Buffer.Graphics.DrawImage(_backgroundBitmap, 0, 0, 800, 500);
 
             foreach (BaseObject star in _stars)
                 star.Draw();
 
-            Buffer.Graphics.DrawImage(new Bitmap(Resources.planet, new Size(200, 200)), 100, 100);
+            Buffer.Graphics.DrawImage(_planetBitmap, 100, 100, 200, 200);
 
             foreach (BaseObject asteroid in _asteroids)
                 asteroid.Draw();
@@ -91,6 +93,9 @@ namespace AsteroidsWinForms
 
         public static void Load()
         {
+            _backgroundBitmap = Resources.background;
+            _planetBitmap = Resources.planet;
+
             var random = new Random();
 
             _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(54, 9));
