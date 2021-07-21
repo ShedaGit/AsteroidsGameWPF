@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsteroidsWinForms.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -45,9 +46,11 @@ namespace AsteroidsWinForms
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
-
-            Buffer.Graphics.FillEllipse(Brushes.Red, new Rectangle(100, 100, 200, 200));
-
+            //Добавляем в отрисовку фон и планету
+            Buffer.Graphics.DrawImage(Resources.background, new Rectangle(0, 0, 800, 500));
+            Buffer.Graphics.DrawImage(Resources.planet, new Rectangle(100, 100, 200, 200));
+            
+            
             foreach (var asteroid in asteroids)
             {
                 asteroid.Draw();
@@ -57,9 +60,8 @@ namespace AsteroidsWinForms
             {
                 star.Draw();
             }
-
+            
             Buffer.Render();
-
         }
 
         public static void Update()
