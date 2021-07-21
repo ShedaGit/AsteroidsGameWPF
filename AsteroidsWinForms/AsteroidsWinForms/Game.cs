@@ -80,19 +80,30 @@ namespace AsteroidsWinForms
 
         public static void Load()
         {
+            var random = new Random();
 
             _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(54, 9));
 
-            var random = new Random();
-            _asteroids = new BaseObject[15];
-            for (int i = 1; i <= _asteroids.Length; i++)
+            _asteroids = new BaseObject[10];
+            for (int i = 0; i < _asteroids.Length; i++)
             {
-                var size = random.Next(10, 40);
-                _asteroids[i - 1] = new Asteroid(new Point(600, i * 20), new Point(-i, -i), new Size(size, size));
+                var size = random.Next(10, 50);
+                var posX = random.Next(0, Width);
+                var posY = random.Next(0, Height);
+                var dirX = random.Next(5, 15);
+                var dirY = random.Next(5, 15);
+                _asteroids[i] = new Asteroid(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
             }
             _stars = new BaseObject[20];
-            for (int i = 1; i <= _stars.Length; i++)
-                _stars[i - 1] = new Star(new Point(600, i * 40), new Point(-i, -i), new Size(5, 5));
+            for (int i = 0; i < _stars.Length; i++)
+            {
+                var size = random.Next(5, 15);
+                var posX = random.Next(0, Width);
+                var posY = random.Next(0, Height);
+                var dirX = random.Next(5, 10);
+                var dirY = random.Next(5, 10);
+                _stars[i] = new Star(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
+            }
         }
     }
 }
