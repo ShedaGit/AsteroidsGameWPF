@@ -14,6 +14,10 @@ namespace Lesson2Workers
         public OutsourceWorker(string name, int salary) : base(name, salary) { }
 
         public override string Name { get => _name; }
+        public override int CompareTo(BaseWorker other)
+        {
+            return (int)this.GetSalaryPerMonth() - (int)other.GetSalaryPerMonth();
+        }
 
         public override double GetSalaryPerMonth()
         {
