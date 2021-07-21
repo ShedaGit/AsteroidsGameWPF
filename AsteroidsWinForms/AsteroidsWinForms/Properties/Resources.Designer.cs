@@ -113,6 +113,16 @@ namespace AsteroidsWinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap laserRed1 {
+            get {
+                object obj = ResourceManager.GetObject("laserRed1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap planet {
             get {
                 object obj = ResourceManager.GetObject("planet", resourceCulture);

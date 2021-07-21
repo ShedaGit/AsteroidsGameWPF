@@ -11,87 +11,88 @@ namespace AsteroidsWinForms
 {
     static class Game
     {
-        private static BufferedGraphicsContext context;
+        static BaseObject[] _asteroids;
+        static BaseObject[] _stars;
+        static Bullet _bullet;
+        private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
+
         public static int Width { get; set; }
         public static int Height { get; set; }
-        static Asteroid[] asteroids;
-        static Asteroid[] stars;
+        static Game() { }
 
         public static void Init(Form form)
         {
-            context = BufferedGraphicsManager.Current;
-            Graphics g = form.CreateGraphics();
-
+            Graphics g;
+            _context = BufferedGraphicsManager.Current;
+            g = form.CreateGraphics();
             Width = form.ClientSize.Width;
             Height = form.ClientSize.Height;
-
-            Buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
-
+            Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
 
-            Timer timer = new Timer();
-            timer.Interval = 60;
-            timer.Tick += Timer_Tick;
+            Timer timer = new Timer { Interval = 60 };
             timer.Start();
-
+            timer.Tick += Timer_Tick;
         }
 
         private static void Timer_Tick(object sender, EventArgs e)
         {
-            Update();
             Draw();
+            Update();
         }
 
         public static void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
-            //Добавляем в отрисовку фон и планету
-            Buffer.Graphics.DrawImage(Resources.background, new Rectangle(0, 0, 800, 500));
-            Buffer.Graphics.DrawImage(Resources.planet, new Rectangle(100, 100, 200, 200));
-            
-            
-            foreach (var asteroid in asteroids)
-            {
-                asteroid.Draw();
-            }
+            Buffer.Graphics.DrawImage(new Bitmap(Resources.background, new Size(800, 500)), 0, 0);
 
-            foreach (var star in stars)
-            {
+            foreach (BaseObject star in _stars)
                 star.Draw();
-            }
-            
+
+            Buffer.Graphics.DrawImage(new Bitmap(Resources.planet, new Size(200, 200)), 100, 100);
+
+            foreach (BaseObject asteroid in _asteroids)
+                asteroid.Draw();
+
+            _bullet.Draw();
+
             Buffer.Render();
         }
 
         public static void Update()
         {
-            foreach (var asteroid in asteroids)
+
+            foreach (BaseObject star in _stars)
+                star.Update();
+
+            foreach (BaseObject asteroid in _asteroids)
             {
                 asteroid.Update();
+                if (asteroid.Collision(_bullet))
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                }
             }
 
-            foreach (var star in stars)
-            {
-                star.Update();
-            }
+            _bullet.Update();
         }
 
         public static void Load()
         {
+
+            _bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(54, 9));
+
             var random = new Random();
-            asteroids = new Asteroid[15];
-            for (int i = 0; i < asteroids.Length; i++)
+            _asteroids = new BaseObject[15];
+            for (int i = 1; i <= _asteroids.Length; i++)
             {
                 var size = random.Next(10, 40);
-                asteroids[i] = new Asteroid(new Point(600, i * 20 + 5), new Point(-i, -i), new Size(size, size));
+                _asteroids[i - 1] = new Asteroid(new Point(600, i * 20), new Point(-i, -i), new Size(size, size));
             }
-
-            stars = new Asteroid[20];
-            for (int i = 0; i < stars.Length; i++)
-            {
-                stars[i] = new Star(new Point(600, i * 40 + 5), new Point(-i, -i), new Size(5, 5));
-            }
+            _stars = new BaseObject[20];
+            for (int i = 1; i <= _stars.Length; i++)
+                _stars[i - 1] = new Star(new Point(600, i * 40), new Point(-i, -i), new Size(5, 5));
         }
     }
 }

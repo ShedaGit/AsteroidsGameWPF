@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AsteroidsWinForms.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -7,35 +8,32 @@ using System.Threading.Tasks;
 
 namespace AsteroidsWinForms
 {
-    class Asteroid
+    class Asteroid : BaseObject
     {
-        protected Point Pos;
-        protected Point Dir;
-        protected Size Size;
-
-
-        public Asteroid(Point pos, Point dir, Size size)
+        private int index;
+        static Random r = new Random();
+        public Asteroid(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-            Pos = pos;
-            Dir = dir;
-            Size = size;
+            index = r.Next(1, 4);
         }
 
-        public virtual void Draw()
+        override public void Draw()
         {
-            Game.Buffer.Graphics.DrawEllipse(Pens.White, Pos.X, Pos.Y, Size.Width, Size.Height);
+            switch (index)
+            {
+                case 1:
+                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid1, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+                    break;
+                case 2:
+                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid2, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+                    break;
+                case 3:
+                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid3, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+                    break;
+                case 4:
+                    Game.Buffer.Graphics.DrawImage(new Bitmap(Resources.asteroid4, new Size(Size.Width, Size.Height)), Pos.X, Pos.Y);
+                    break;
+            }
         }
-
-        public virtual void Update()
-        {
-            Pos.X = Pos.X + Dir.X;
-            Pos.Y = Pos.Y + Dir.Y;
-
-            if (Pos.X < 0) Dir.X = -Dir.X;
-            if (Pos.X > Game.Width) Dir.X = -Dir.X;
-            if (Pos.Y < 0) Dir.Y = -Dir.Y;
-            if (Pos.Y > Game.Height) Dir.Y = -Dir.Y;
-        }
-
     }
 }
