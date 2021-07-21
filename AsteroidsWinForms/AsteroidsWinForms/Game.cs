@@ -26,8 +26,18 @@ namespace AsteroidsWinForms
             Graphics g;
             _context = BufferedGraphicsManager.Current;
             g = form.CreateGraphics();
-            Width = form.ClientSize.Width;
-            Height = form.ClientSize.Height;
+
+            if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 || 
+                form.ClientSize.Height < 1000 & form.ClientSize.Height > 0)
+            {
+                Width = form.ClientSize.Width;
+                Height = form.ClientSize.Height;
+            }
+            else
+            {
+                throw new ArgumentOutOfRangeException("Client window size doesn't match requirements: Width and Height should be in range from 0 to 1000");
+            }
+            
             Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
             Load();
 
