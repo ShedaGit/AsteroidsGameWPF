@@ -72,6 +72,7 @@ namespace AsteroidsWinForms
                 if (asteroid.Collision(_bullet))
                 {
                     System.Media.SystemSounds.Hand.Play();
+                    _bullet.Explosion();
                 }
             }
 

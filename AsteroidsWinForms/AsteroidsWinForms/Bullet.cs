@@ -21,5 +21,13 @@ namespace AsteroidsWinForms
         {
             Pos.X = Pos.X + Dir.X;
         }
+
+        public void Explosion()
+        {
+            var rand = new Random();
+            Pos.X = 0;
+            //Поправка на Size чтобы пуля нормально отображалась
+            Pos.Y = rand.Next(0 + Size.Height, Game.Height - Size.Height);
+        }
     }
 }
