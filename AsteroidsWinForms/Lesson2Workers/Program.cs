@@ -4,35 +4,51 @@ namespace Lesson2Workers
 {
     class Program
     {
-        static void Main(string[] args)
+        #region Help methods and fields
+
+        private static Random random = new Random();
+
+        static Employee GenerateEmployee()
         {
-            ShowCase();
+            var names = new[] { "Анатолий", "Глеб", "Клим", "Мартин", "Лазарь", "Владлен", "Клим", "Панкратий", "Рубен", "Герман" };
+            var surnames = new[] { "Григорьев", "Фокин", "Шестаков", "Хохлов", "Шубин", "Бирюков", "Копылов", "Горбунов", "Лыткин", "Соколов" };
+
+            var typeIndex = random.Next(0, 2);
+            var salary = random.Next(200, 501);
+            var salaryIndex = random.Next(100, 160);
+            switch (typeIndex)
+            {
+                case 0:
+                    return new Freelancer(names[random.Next(0, 10)], surnames[random.Next(0, 10)], salary);
+                case 1:
+                    return new Worker(names[random.Next(0, 10)], surnames[random.Next(0, 10)], salary * salaryIndex);
+            }
+            return null;
         }
 
-        static public void ShowCase()
-        {
-            var workers = new Employee[]
-            {
-                new Worker("Eddie", 190),
-                new Worker("Adam", 175),
-                new Worker("John", 230),
-                new Worker("Anna", 205),
-                new Freelancer("Mike", 40000)
-            };
+        #endregion
 
-            foreach (var worker in workers)
-            {
-                Console.WriteLine($"{worker.Name}'s salary per month = {worker.GetSalaryPerMonth()}");
-            }
+        static void Main(string[] args)
+        {
+            #region Task1
+
+            Employee[] employees = new Employee[10];
+            for (int i = 0; i < employees.Length; i++)
+                employees[i] = GenerateEmployee();
+
+            foreach (var employee in employees)
+                Console.WriteLine(employee);
 
             Console.WriteLine();
+            Array.Sort(employees, new SalaryComparer());
 
-            Array.Sort(workers);
+            Console.WriteLine("\n*** Отсортированный массив сотрудников ***\n");
+            foreach (var employee in employees)
+                Console.WriteLine(employee);
 
-            foreach (var worker in workers)
-            {
-                Console.WriteLine($"{worker.Name}'s salary per month = {worker.GetSalaryPerMonth()}");
-            }
+            Console.ReadKey();
+
+            #endregion
         }
     }
 }
