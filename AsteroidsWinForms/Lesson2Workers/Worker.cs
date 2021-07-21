@@ -4,25 +4,21 @@ using System.Text;
 
 namespace Lesson2Workers
 {
-    class Worker : Employee
+    /// <summary>
+    /// Рабочий (фулл-тайм)
+    /// </summary>
+    public class Worker : Employee
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name">Name of a Worker</param>
-        /// <param name="salary">Salary per hour</param>
-        public Worker(string name, int salary) : base(name, salary) { }
+        public Worker(string name, string surname, decimal salary) : base(name, surname, salary) { }
 
-        public override string Name { get => _name; }
-
-        public override int CompareTo(Employee other)
+        public override decimal СalculateSalary()
         {
-            return (int)this.GetSalaryPerMonth() - (int)other.GetSalaryPerMonth();
+            return Salary;
         }
 
-        public override double GetSalaryPerMonth()
+        public override string ToString()
         {
-            return 20.8 * 8 * _salary;
+            return $"{Surname} {Name}; Рабочий; Среднемесячная заработная плата (фиксированная месячная оплата): {СalculateSalary()} (руб.)";
         }
     }
 }

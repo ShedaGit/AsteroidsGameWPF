@@ -4,24 +4,21 @@ using System.Text;
 
 namespace Lesson2Workers
 {
-    class Freelancer : Employee
+    /// <summary>
+    /// Фрилансер (работник с почасовой оплатой)
+    /// </summary>
+    public class Freelancer : Employee
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name">Name of a Worker</param>
-        /// <param name="salary">Fixed rate salary</param>
-        public Freelancer(string name, int salary) : base(name, salary) { }
+        public Freelancer(string name, string surname, decimal salary) : base(name, surname, salary) { }
 
-        public override string Name { get => _name; }
-        public override int CompareTo(Employee other)
+        public override decimal СalculateSalary()
         {
-            return (int)this.GetSalaryPerMonth() - (int)other.GetSalaryPerMonth();
+            return (decimal)20.8 * 8 * Salary;
         }
 
-        public override double GetSalaryPerMonth()
+        public override string ToString()
         {
-            return _salary;
+            return $"{Surname} {Name}; Фрилансер; Среднемесячная заработная плата: {СalculateSalary()} (руб.); Почасовая ставка: {Salary} (руб.)";
         }
     }
 }
