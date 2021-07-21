@@ -11,13 +11,13 @@ namespace Lesson2Workers
 
         static public void ShowCase()
         {
-            var workers = new BaseWorker[]
+            var workers = new Employee[]
             {
                 new Worker("Eddie", 190),
                 new Worker("Adam", 175),
                 new Worker("John", 230),
                 new Worker("Anna", 205),
-                new OutsourceWorker("Mike", 40000)
+                new Freelancer("Mike", 40000)
             };
 
             foreach (var worker in workers)

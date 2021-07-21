@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Lesson2Workers
 {
-    class Worker : BaseWorker
+    class Worker : Employee
     {
         /// <summary>
         /// 
@@ -15,7 +15,7 @@ namespace Lesson2Workers
 
         public override string Name { get => _name; }
 
-        public override int CompareTo(BaseWorker other)
+        public override int CompareTo(Employee other)
         {
             return (int)this.GetSalaryPerMonth() - (int)other.GetSalaryPerMonth();
         }
