@@ -60,7 +60,11 @@ namespace AsteroidsWinForms
             if (e.KeyCode == Keys.Down) _ship.MoveDown();
             if (e.KeyCode == Keys.ControlKey)
             {
-                _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 21), new Point(25, 0), new Size(54, 9));
+                //Не даём пересоздавать пулю
+                if (_bullet == null)
+                {
+                    _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 21), new Point(25, 0), new Size(54, 9));
+                }
             }
         }
 
@@ -132,6 +136,11 @@ namespace AsteroidsWinForms
             if (_bullet != null)
             {
                 _bullet.Update();
+                //Уничтожаем пулю за границами экрана, можно ещё попробовать через событие это делать
+                if (_bullet.Rect.X >= Game.Width)
+                {
+                    _bullet = null;
+                }
             }
         }
 
