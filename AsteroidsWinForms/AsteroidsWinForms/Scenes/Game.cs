@@ -1,4 +1,5 @@
 ﻿using AsteroidsWinForms.Properties;
+using AsteroidsWinForms.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,30 +10,21 @@ using System.Windows.Forms;
 
 namespace AsteroidsWinForms
 {
-    static class Game
+    public class Game : BaseScene
     {
-        static BaseObject[] _asteroids;
-        static BaseObject[] _stars;
-        static Bullet _bullet;
-        static Ship _ship;
-        static Timer timer;
-        static Random random = new Random();
-        private static int _score = 0;
-        private static BufferedGraphicsContext _context;
-        public static BufferedGraphics Buffer;
-        private static Bitmap _backgroundBitmap;
-        private static Bitmap _planetBitmap;
+        private BaseObject[] _asteroids;
+        private BaseObject[] _stars;
+        private Bullet _bullet;
+        private Ship _ship;
+        private Timer _timer;
+        private Random random = new Random();
+        private int _score = 0;
+        private Bitmap _backgroundBitmap;
+        private Bitmap _planetBitmap;
 
-        public static int Width { get; set; }
-        public static int Height { get; set; }
-        static Game() { }
-
-        public static void Init(Form form)
+        public override void Init(Form form)
         {
-            Graphics g;
-            _context = BufferedGraphicsManager.Current;
-            g = form.CreateGraphics();
-
+            base.Init(form);
             if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 || 
                 form.ClientSize.Height < 1000 & form.ClientSize.Height > 0)
             {
@@ -43,21 +35,16 @@ namespace AsteroidsWinForms
             {
                 throw new ArgumentOutOfRangeException("Client window size doesn't match requirements: Width and Height should be in range from 0 to 1000");
             }
-            
-            Buffer = _context.Allocate(g, new Rectangle(0, 0, Width, Height));
+
             Load();
 
-            form.KeyDown += OnFormKeyDown;
-
-            timer = new Timer { Interval = 60 };
-            timer.Start();
-            timer.Tick += Timer_Tick;
+            _timer = new Timer { Interval = 60 };
+            _timer.Start();
+            _timer.Tick += Timer_Tick;
         }
 
-        private static void OnFormKeyDown(object sender, KeyEventArgs e)
+        public override void SceneKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up) _ship.MoveUp();
-            if (e.KeyCode == Keys.Down) _ship.MoveDown();
             if (e.KeyCode == Keys.ControlKey)
             {
                 //Не даём пересоздавать пулю
@@ -66,15 +53,30 @@ namespace AsteroidsWinForms
                     _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 21), new Point(25, 0), new Size(54, 9));
                 }
             }
+            if (e.KeyCode == Keys.Up)
+            {
+                _ship.MoveUp();
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                _ship.MoveDown();
+            }
+            if (e.KeyCode == Keys.Back)
+            {
+                SceneManager
+                    .Get()
+                    .Init<MenuScene>(_form)
+                    .Draw();
+            }
         }
 
-        private static void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             Draw();
             Update();
         }
 
-        public static void Draw()
+        public override void Draw()
         {
             Buffer.Graphics.Clear(Color.Black);
             Buffer.Graphics.DrawImage(_backgroundBitmap, 0, 0, 800, 500);
@@ -99,7 +101,7 @@ namespace AsteroidsWinForms
             Buffer.Render();
         }
 
-        public static void Update()
+        public void Update()
         {
 
             foreach (BaseObject star in _stars)
@@ -144,7 +146,7 @@ namespace AsteroidsWinForms
             }
         }
 
-        public static void Load()
+        public void Load()
         {
             _backgroundBitmap = Resources.background;
             _planetBitmap = Resources.planet;
@@ -174,9 +176,9 @@ namespace AsteroidsWinForms
             }
         }
 
-        private static void OnShipDie(object sender, ShipDieEventArgs e)
+        private void OnShipDie(object sender, ShipDieEventArgs e)
         {
-            timer.Stop();
+            _timer.Stop();
             Buffer.Graphics.DrawString("Game over", new Font(FontFamily.GenericSansSerif, 60, FontStyle.Bold), Brushes.White, 190, 100);
             Buffer.Graphics.DrawString($"Last damage: {e.Damage}", new Font(FontFamily.GenericSansSerif, 30, FontStyle.Bold), Brushes.White, 250, 200);
             Buffer.Render();
