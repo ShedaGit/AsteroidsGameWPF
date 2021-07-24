@@ -17,6 +17,7 @@ namespace AsteroidsWinForms
         static Ship _ship;
         static Timer timer;
         static Random random = new Random();
+        private static int _score = 0;
         private static BufferedGraphicsContext _context;
         public static BufferedGraphics Buffer;
         private static Bitmap _backgroundBitmap;
@@ -89,6 +90,7 @@ namespace AsteroidsWinForms
 
             _ship.Draw();
             Buffer.Graphics.DrawString($"Energy: {_ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 0);
+            Buffer.Graphics.DrawString($"Score: {_score}", SystemFonts.DefaultFont, Brushes.White, 0, 20);
 
             Buffer.Render();
         }
@@ -113,6 +115,7 @@ namespace AsteroidsWinForms
                     //_bullet.Explosion();
                     _asteroids[i] = null;
                     _bullet = null;
+                    _score++;
                     continue;
                 }
 
