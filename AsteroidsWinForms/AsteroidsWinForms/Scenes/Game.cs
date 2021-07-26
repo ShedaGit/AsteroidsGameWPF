@@ -16,6 +16,7 @@ namespace AsteroidsWinForms
         private BaseObject[] _stars;
         private List<Bullet> _bullets = new List<Bullet>();
         private Ship _ship;
+        private AidKit _aidKit;
         private Timer _timer;
         private Random random = new Random();
         private int _score = 0;
@@ -26,7 +27,7 @@ namespace AsteroidsWinForms
         public override void Init(Form form)
         {
             base.Init(form);
-            if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 || 
+            if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 ||
                 form.ClientSize.Height < 1000 & form.ClientSize.Height > 0)
             {
                 Width = form.ClientSize.Width;
@@ -94,6 +95,12 @@ namespace AsteroidsWinForms
                 bullet.Draw();
 
             _ship.Draw();
+
+            if (_aidKit != null)
+            {
+                _aidKit.Draw();
+            }
+
             Buffer.Graphics.DrawString($"Energy: {_ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 0);
             Buffer.Graphics.DrawString($"Ammo: {3 - _bullets.Count}", SystemFonts.DefaultFont, Brushes.White, 0, 20);
             Buffer.Graphics.DrawString($"Score: {_score}", SystemFonts.DefaultFont, Brushes.White, 0, 40);
@@ -107,6 +114,12 @@ namespace AsteroidsWinForms
             foreach (BaseObject star in _stars)
                 star.Update();
 
+            if (_aidKit != null && _ship.Collision(_aidKit))
+            {
+                _ship.IncreaseEnergy(25);
+                _aidKit = null;
+            }
+
             //Проверка столкновений астероидов с пулями и кораблём
             for (int i = _asteroids.Count - 1; i >= 0; i--)
             {
@@ -117,6 +130,11 @@ namespace AsteroidsWinForms
                     _ship.DecreaseEnergy(random.Next(15, 25));
                     //Чтобы астероид не "ел" энергию на каждом кадре, он разрушается о корабль
                     _asteroids.RemoveAt(i);
+                    //Спавн аптечки если энергия меньшего половины, когда попал астероид
+                    if (_aidKit == null && _ship.Energy < 50)
+                    {
+                        _ship.ShipDamaged();
+                    }
                     continue;
                 }
 
@@ -153,7 +171,7 @@ namespace AsteroidsWinForms
             {
                 CreateAsteroids(++_amountOfAsteroids);
             }
-            
+
 
             foreach (Bullet bullet in _bullets)
                 bullet.Update();
@@ -166,6 +184,7 @@ namespace AsteroidsWinForms
 
             _ship = new Ship(new Point(10, Height / 2), new Point(0, 5), new Size(45, 50));
             _ship.Die += OnShipDie;
+            _ship.Damaged += OnShipDamaged;
 
             //Создание астероидов
             CreateAsteroids(_amountOfAsteroids);
@@ -181,6 +200,11 @@ namespace AsteroidsWinForms
                 var dirY = random.Next(5, 10);
                 _stars[i] = new Star(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
             }
+        }
+
+        private void OnShipDamaged()
+        {
+            _aidKit = new AidKit(new Point(10, random.Next(25, Height - 25)), new Point(0, 0), new Size(50, 40));
         }
 
         private void CreateAsteroids(int amount)
