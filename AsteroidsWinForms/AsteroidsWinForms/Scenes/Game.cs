@@ -94,6 +94,7 @@ namespace AsteroidsWinForms
 
             _ship.Draw();
             Buffer.Graphics.DrawString($"Energy: {_ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 0);
+            Buffer.Graphics.DrawString($"Ammo: {3 - _bullets.Count}", SystemFonts.DefaultFont, Brushes.White, 0, 20);
             Buffer.Graphics.DrawString($"Score: {_score}", SystemFonts.DefaultFont, Brushes.White, 0, 40);
 
             Buffer.Render();
