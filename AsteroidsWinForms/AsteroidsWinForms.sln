@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsteroidsWinForms", "AsteroidsWinForms\AsteroidsWinForms.csproj", "{C5ECD1AC-2967-4692-9749-BA97C5B1778F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson2Workers", "Lesson2Workers\Lesson2Workers.csproj", "{79CCE339-DDD4-4554-85A5-035C62C425C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lesson2Workers", "Lesson2Workers\Lesson2Workers.csproj", "{79CCE339-DDD4-4554-85A5-035C62C425C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lesson4Collections", "Lesson4Collections\Lesson4Collections.csproj", "{7F611E2D-911C-4A8B-881B-54DA1DD3A911}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{79CCE339-DDD4-4554-85A5-035C62C425C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79CCE339-DDD4-4554-85A5-035C62C425C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79CCE339-DDD4-4554-85A5-035C62C425C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F611E2D-911C-4A8B-881B-54DA1DD3A911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F611E2D-911C-4A8B-881B-54DA1DD3A911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F611E2D-911C-4A8B-881B-54DA1DD3A911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F611E2D-911C-4A8B-881B-54DA1DD3A911}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
