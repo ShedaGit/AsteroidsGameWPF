@@ -157,15 +157,7 @@ namespace AsteroidsWinForms
             _ship.Die += OnShipDie;
 
             //Создание астероидов
-            for (int i = 0; i < 15; i++)
-            {
-                var size = random.Next(25, 50);
-                var posX = random.Next(100, Width);
-                var posY = random.Next(0, Height);
-                var dirX = random.Next(5, 10);
-                var dirY = random.Next(5, 10);
-                _asteroids.Add(new Asteroid(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size)));
-            }
+            CreateAsteroids(15);
 
             //Создание звёзд
             _stars = new BaseObject[20];
@@ -177,6 +169,19 @@ namespace AsteroidsWinForms
                 var dirX = random.Next(5, 10);
                 var dirY = random.Next(5, 10);
                 _stars[i] = new Star(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
+            }
+        }
+
+        private void CreateAsteroids(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                var size = random.Next(25, 50);
+                var posX = random.Next(100, Width);
+                var posY = random.Next(0, Height);
+                var dirX = random.Next(5, 10);
+                var dirY = random.Next(5, 10);
+                _asteroids.Add(new Asteroid(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size)));
             }
         }
 
