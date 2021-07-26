@@ -19,6 +19,7 @@ namespace AsteroidsWinForms
         private Timer _timer;
         private Random random = new Random();
         private int _score = 0;
+        private int _amountOfAsteroids = 10;
         private Bitmap _backgroundBitmap;
         private Bitmap _planetBitmap;
 
@@ -141,8 +142,17 @@ namespace AsteroidsWinForms
                 }
             }
 
-            foreach (BaseObject asteroid in _asteroids)
-                asteroid.Update();
+            //Пересоздаём астероиды если они уничтожены
+            if (_asteroids.Count != 0)
+            {
+                foreach (BaseObject asteroid in _asteroids)
+                    asteroid.Update();
+            }
+            else
+            {
+                CreateAsteroids(++_amountOfAsteroids);
+            }
+            
 
             foreach (Bullet bullet in _bullets)
                 bullet.Update();
@@ -157,7 +167,7 @@ namespace AsteroidsWinForms
             _ship.Die += OnShipDie;
 
             //Создание астероидов
-            CreateAsteroids(15);
+            CreateAsteroids(_amountOfAsteroids);
 
             //Создание звёзд
             _stars = new BaseObject[20];
