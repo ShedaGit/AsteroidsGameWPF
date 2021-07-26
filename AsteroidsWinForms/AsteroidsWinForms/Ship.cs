@@ -11,6 +11,7 @@ namespace AsteroidsWinForms
         private readonly Bitmap _ship;
         private int _energy = 100;
         public event EventHandler<ShipDieEventArgs> Die;
+        public event Action Damaged;
 
         public int Energy { get => _energy; }
 
@@ -38,12 +39,23 @@ namespace AsteroidsWinForms
             }
         }
 
+        public void IncreaseEnergy(int heal)
+        {
+            _energy += heal;
+        }
+
+        //Попробовал другой способ вызова события
+        public void ShipDamaged()
+        {
+            Damaged?.Invoke();
+        }
+
         //Вынес вызов события смерти в отдельный метод, что отделить смерть и уменьшение энергии
         private void ShipDeath(int damage)
         {
             if (Die != null)
             {
-                Die.Invoke(this, new ShipDieEventArgs(damage));
+                Die?.Invoke(this, new ShipDieEventArgs(damage));
             }
         }
 
