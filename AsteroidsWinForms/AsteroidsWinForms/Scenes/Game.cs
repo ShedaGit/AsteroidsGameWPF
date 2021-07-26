@@ -128,6 +128,7 @@ namespace AsteroidsWinForms
                         System.Media.SystemSounds.Hand.Play();
                         _asteroids.RemoveAt(i);
                         _bullets.RemoveAt(j);
+                        _score++;
                         break;
                     }
                 }
