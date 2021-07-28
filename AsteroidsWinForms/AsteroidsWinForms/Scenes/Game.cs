@@ -12,20 +12,22 @@ namespace AsteroidsWinForms
 {
     public class Game : BaseScene
     {
-        private BaseObject[] _asteroids;
+        private List<Asteroid> _asteroids = new List<Asteroid>();
         private BaseObject[] _stars;
-        private Bullet _bullet;
+        private List<Bullet> _bullets = new List<Bullet>();
         private Ship _ship;
+        private AidKit _aidKit;
         private Timer _timer;
         private Random random = new Random();
         private int _score = 0;
+        private int _amountOfAsteroids = 10;
         private Bitmap _backgroundBitmap;
         private Bitmap _planetBitmap;
 
         public override void Init(Form form)
         {
             base.Init(form);
-            if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 || 
+            if (form.ClientSize.Width < 1000 & form.ClientSize.Width > 0 ||
                 form.ClientSize.Height < 1000 & form.ClientSize.Height > 0)
             {
                 Width = form.ClientSize.Width;
@@ -48,9 +50,9 @@ namespace AsteroidsWinForms
             if (e.KeyCode == Keys.ControlKey)
             {
                 //Не даём пересоздавать пулю
-                if (_bullet == null)
+                if (_bullets.Count < 3)
                 {
-                    _bullet = new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 21), new Point(25, 0), new Size(54, 9));
+                    _bullets.Add(new Bullet(new Point(_ship.Rect.X + 10, _ship.Rect.Y + 21), new Point(25, 0), new Size(54, 9)));
                 }
             }
             if (e.KeyCode == Keys.Up)
@@ -87,16 +89,21 @@ namespace AsteroidsWinForms
             Buffer.Graphics.DrawImage(_planetBitmap, 100, 100, 200, 200);
 
             foreach (BaseObject asteroid in _asteroids)
-                if (asteroid != null) asteroid.Draw();
+                asteroid.Draw();
 
-            if (_bullet != null)
-            {
-                _bullet.Draw();
-            }
+            foreach (Bullet bullet in _bullets)
+                bullet.Draw();
 
             _ship.Draw();
+
+            if (_aidKit != null)
+            {
+                _aidKit.Draw();
+            }
+
             Buffer.Graphics.DrawString($"Energy: {_ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 0);
-            Buffer.Graphics.DrawString($"Score: {_score}", SystemFonts.DefaultFont, Brushes.White, 0, 20);
+            Buffer.Graphics.DrawString($"Ammo: {3 - _bullets.Count}", SystemFonts.DefaultFont, Brushes.White, 0, 20);
+            Buffer.Graphics.DrawString($"Score: {_score}", SystemFonts.DefaultFont, Brushes.White, 0, 40);
 
             Buffer.Render();
         }
@@ -107,43 +114,67 @@ namespace AsteroidsWinForms
             foreach (BaseObject star in _stars)
                 star.Update();
 
-            for (int i = 0; i < _asteroids.Length; i++)
+            if (_aidKit != null && _ship.Collision(_aidKit))
             {
-                if (_asteroids[i] == null) continue;
+                _ship.IncreaseEnergy(25);
+                _aidKit = null;
+            }
 
-                _asteroids[i].Update();
-
-                //Столкновение пули с астероидом
-                if (_bullet != null && _asteroids[i].Collision(_bullet))
-                {
-                    System.Media.SystemSounds.Hand.Play();
-                    //Можно ли как то занулить класс в методе?
-                    //_bullet.Explosion();
-                    _asteroids[i] = null;
-                    _bullet = null;
-                    _score++;
-                    continue;
-                }
-
-                //Столкновение корабля с астероидом
-                if (_ship.Collision(_asteroids[i]))
+            //Проверка столкновений астероидов с пулями и кораблём
+            for (int i = _asteroids.Count - 1; i >= 0; i--)
+            {
+                //Провека столкновения астероидов с кораблем
+                if (_asteroids[i].Collision(_ship))
                 {
                     System.Media.SystemSounds.Asterisk.Play();
                     _ship.DecreaseEnergy(random.Next(15, 25));
                     //Чтобы астероид не "ел" энергию на каждом кадре, он разрушается о корабль
-                    _asteroids[i] = null;
+                    _asteroids.RemoveAt(i);
+                    //Спавн аптечки если энергия меньшего половины, когда попал астероид
+                    if (_aidKit == null && _ship.Energy < 50)
+                    {
+                        _ship.ShipDamaged();
+                    }
+                    continue;
+                }
+
+                //Провека столкновения пуль с астероидами
+                for (int j = _bullets.Count - 1; j >= 0; j--)
+                {
+                    if (_asteroids[i].Collision(_bullets[j]))
+                    {
+                        System.Media.SystemSounds.Hand.Play();
+                        _asteroids.RemoveAt(i);
+                        _bullets.RemoveAt(j);
+                        _score++;
+                        break;
+                    }
                 }
             }
 
-            if (_bullet != null)
+            //Уничтожаем пулю за границами экрана
+            for (int i = _bullets.Count - 1; i >= 0; i--)
             {
-                _bullet.Update();
-                //Уничтожаем пулю за границами экрана, можно ещё попробовать через событие это делать
-                if (_bullet.Rect.X >= Game.Width)
+                if (_bullets[i].Rect.X > Game.Width)
                 {
-                    _bullet = null;
+                    _bullets.RemoveAt(i);
                 }
             }
+
+            //Пересоздаём астероиды если они уничтожены
+            if (_asteroids.Count != 0)
+            {
+                foreach (BaseObject asteroid in _asteroids)
+                    asteroid.Update();
+            }
+            else
+            {
+                CreateAsteroids(++_amountOfAsteroids);
+            }
+
+
+            foreach (Bullet bullet in _bullets)
+                bullet.Update();
         }
 
         public void Load()
@@ -153,17 +184,12 @@ namespace AsteroidsWinForms
 
             _ship = new Ship(new Point(10, Height / 2), new Point(0, 5), new Size(45, 50));
             _ship.Die += OnShipDie;
+            _ship.Damaged += OnShipDamaged;
 
-            _asteroids = new BaseObject[10];
-            for (int i = 0; i < _asteroids.Length; i++)
-            {
-                var size = random.Next(25, 50);
-                var posX = random.Next(0, Width);
-                var posY = random.Next(0, Height);
-                var dirX = random.Next(5, 10);
-                var dirY = random.Next(5, 10);
-                _asteroids[i] = new Asteroid(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
-            }
+            //Создание астероидов
+            CreateAsteroids(_amountOfAsteroids);
+
+            //Создание звёзд
             _stars = new BaseObject[20];
             for (int i = 0; i < _stars.Length; i++)
             {
@@ -173,6 +199,24 @@ namespace AsteroidsWinForms
                 var dirX = random.Next(5, 10);
                 var dirY = random.Next(5, 10);
                 _stars[i] = new Star(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size));
+            }
+        }
+
+        private void OnShipDamaged()
+        {
+            _aidKit = new AidKit(new Point(10, random.Next(25, Height - 25)), new Point(0, 0), new Size(50, 40));
+        }
+
+        private void CreateAsteroids(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                var size = random.Next(25, 50);
+                var posX = random.Next(100, Width);
+                var posY = random.Next(0, Height);
+                var dirX = random.Next(5, 10);
+                var dirY = random.Next(5, 10);
+                _asteroids.Add(new Asteroid(new Point(posX, posY), new Point(dirX, dirY), new Size(size, size)));
             }
         }
 
