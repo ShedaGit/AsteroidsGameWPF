@@ -1,3 +1,4 @@
+using AsteroidsWinForms.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,13 @@ namespace AsteroidsWinForms
                 StartPosition = FormStartPosition.CenterScreen,
                 Text = "Asteroids"
             };
-            Game.Init(form);
             form.Show();
-            Game.Draw();
+
+            SceneManager
+                .Get()
+                .Init<MenuScene>(form)
+                .Draw();
+
             Application.Run(form);
         }
     }
