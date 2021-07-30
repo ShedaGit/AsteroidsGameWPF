@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EmployeeDatabase.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,6 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Database\WPF.Data.csproj">
+      <Project>{3fb03924-481f-40ff-9459-08387a09bcd2}</Project>
+      <Name>WPF.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPF.Controls\WPF.Controls.csproj">
+      <Project>{E0E7E757-85D5-417D-8E85-886CDFA8706B}</Project>
+      <Name>WPF.Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
