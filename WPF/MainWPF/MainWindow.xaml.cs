@@ -38,5 +38,18 @@ namespace MainWPF
             }
         }
 
+        private void UpdateBinding()
+        {
+            employeesListView.ItemsSource = null;
+            employeesListView.ItemsSource = database.Employees;
+        }
+        private void btnApply_Click(object sender, RoutedEventArgs e)
+        {
+            if (employeesListView.SelectedItems.Count < 1) return;
+
+            employeesControl.UpdateEmployee();
+            UpdateBinding();
+        }
+
     }
 }
