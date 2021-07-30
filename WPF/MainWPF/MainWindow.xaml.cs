@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF.Controls;
 
 namespace MainWPF
 {
@@ -54,7 +55,13 @@ namespace MainWPF
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            EmployeeCreateWindow window = new EmployeeCreateWindow();
 
+            if (window.ShowDialog() == true)
+            {
+                database.Employees.Add(window.Employee);
+                UpdateBinding();
+            }
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
