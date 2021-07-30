@@ -43,6 +43,7 @@ namespace MainWPF
             employeesListView.ItemsSource = null;
             employeesListView.ItemsSource = database.Employees;
         }
+
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
             if (employeesListView.SelectedItems.Count < 1) return;
@@ -51,5 +52,20 @@ namespace MainWPF
             UpdateBinding();
         }
 
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+            if (employeesListView.SelectedItems.Count < 1) return;
+
+            if (MessageBox.Show("Вы действительно желаете удалить анкету сотрудника?", "Удаление анкеты", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                database.Employees.Remove((Employee)employeesListView.SelectedItems[0]);
+                UpdateBinding();
+            }
+        }
     }
 }
