@@ -9,14 +9,15 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
 
-        <ListView x:Name="employeesListView" Margin="10,10,420,10" SelectionMode="Single">
+        <ListView x:Name="employeesListView" Margin="10,10,420,10" SelectionMode="Single" SelectionChanged="employeesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="auto" Header="Сотрудник" DisplayMemberBinding="{Binding Phone}"/>
-                    <GridViewColumn Width="auto" Header="Департамент" DisplayMemberBinding="{Binding FIO}"/>
+                    <GridViewColumn Width="auto" Header="Сотрудник" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Width="auto" Header="Департамент" DisplayMemberBinding="{Binding OfficeCategory}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <Controls:EmployeeControl Margin="0,10,10,130" HorizontalAlignment="Right" Width="405"/>
+        <Controls:EmployeeControl x:Name="employeesControl" Margin="0,10,10,130" HorizontalAlignment="Right" Width="405"/>
+        
     </Grid>
 </Window>

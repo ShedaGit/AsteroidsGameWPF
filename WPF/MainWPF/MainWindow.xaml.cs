@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,22 @@ namespace MainWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private EmployeeDatabase database = new EmployeeDatabase();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            employeesListView.ItemsSource = database.Employees;
         }
+
+        private void employeesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count != 0)
+            {
+                employeesControl.SetEmployee((Employee)e.AddedItems[0]);
+            }
+        }
+
     }
 }

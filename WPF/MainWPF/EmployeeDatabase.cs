@@ -23,38 +23,38 @@ namespace MainWPF
         public EmployeeDatabase()
         {
             Employees = new List<Employee>();
+            GenerateContacts(50);
         }
 
-        private void GenerateContacts(int contactCount)
+        private void GenerateContacts(int employeesCount)
         {
             Random random = new Random();
             Employees.Clear();
 
-            var male = random.Next(2) == 0 ? true : false;
             string firstname = string.Empty;
             string lastname = string.Empty;
             string middlename = string.Empty;
 
-            if (male)
+            while (Employees.Count < employeesCount)
             {
-                firstname = maleFirstnames[random.Next(maleFirstnames.Length)];
-                lastname = maleLastnames[random.Next(maleLastnames.Length)];
-                middlename = maleMiddlenames[random.Next(maleMiddlenames.Length)];
-            }
-            else
-            {
-                firstname = femaleFirstnames[random.Next(femaleFirstnames.Length)];
-                lastname = femaleLastnames[random.Next(femaleLastnames.Length)];
-                middlename = femaleMiddlenames[random.Next(femaleMiddlenames.Length)];
-            }
+                var male = random.Next(2) == 0 ? true : false;
+                if (male)
+                {
+                    firstname = maleFirstnames[random.Next(maleFirstnames.Length)];
+                    lastname = maleLastnames[random.Next(maleLastnames.Length)];
+                    middlename = maleMiddlenames[random.Next(maleMiddlenames.Length)];
+                }
+                else
+                {
+                    firstname = femaleFirstnames[random.Next(femaleFirstnames.Length)];
+                    lastname = femaleLastnames[random.Next(femaleLastnames.Length)];
+                    middlename = femaleMiddlenames[random.Next(femaleMiddlenames.Length)];
+                }
 
-            var officeCategory = (Department)random.Next(0, 4);
+                var officeCategory = (Department)random.Next(0, 4);
 
-            for (int i = 0; i < contactCount; i++)
-            {
                 Employees.Add(new Employee(firstname, lastname, middlename, officeCategory));
             }
         }
-
     }
 }
