@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WPF.Controls.EmployeeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPF.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="300">
+    <Grid>
+        <Label x:Name="employeeLabel" Content="Анкета сотрудника" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="employeeFirstname" Content="Имя:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="employeeLastname" Content="Фамилия:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="employeeMiddlename" Content="Отчество:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="officeCategoryLabel" Content="Департамент:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbFirstname" Height="22" Margin="100,42,10,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbLastname" Height="22" Margin="100,72,10,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbMiddlename" Height="22" Margin="100,102,10,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbComment" Margin="10,162,10,10" TextWrapping="Wrap"/>
+        <ComboBox x:Name="cbOfficeCategory" Height="22" Margin="100,132,10,0" VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>
