@@ -8,5 +8,13 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         
+        <ListView x:Name="employeesListView" Margin="10,10,420,10" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="auto" Header="Сотрудник" DisplayMemberBinding="{Binding Phone}"/>
+                    <GridViewColumn Width="auto" Header="Департамент" DisplayMemberBinding="{Binding FIO}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
