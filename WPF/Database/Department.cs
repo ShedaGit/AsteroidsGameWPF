@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Database
 {
-    class Department
+    public enum Department
     {
+        General = 0,
+        IT = 1,
+        Finance = 2,
+        HR = 3,
     }
 }
