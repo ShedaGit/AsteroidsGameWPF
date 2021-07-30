@@ -9,7 +9,7 @@ namespace Database
     /// <summary>
     /// Сотрудник
     /// </summary>
-    class Employee
+    public class Employee
     {
         /// <summary>
         /// Имя
@@ -30,6 +30,11 @@ namespace Database
         /// Полное имя
         /// </summary>
         public string FullName { get => $"{FirstName} {MiddleName} {LastName}"; }
+
+        /// <summary>
+        /// Комментарий
+        /// </summary>
+        public string Comment { get; set; }
 
         /// <summary>
         /// Направление департамента, в котором состоит сотрудник
