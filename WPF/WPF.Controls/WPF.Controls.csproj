@@ -80,5 +80,11 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Database\WPF.Data.csproj">
+      <Project>{3FB03924-481F-40FF-9459-08387A09BCD2}</Project>
+      <Name>WPF.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

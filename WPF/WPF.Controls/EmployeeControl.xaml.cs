@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,33 @@ namespace WPF.Controls
     /// </summary>
     public partial class EmployeeControl : UserControl
     {
+        private Employee _employee;
+        
         public EmployeeControl()
         {
             InitializeComponent();
+
+            cbOfficeCategory.ItemsSource = Enum.GetValues(typeof(Department)).Cast<Department>();
+        }
+
+        public void SetEmployee(Employee employee)
+        {
+            _employee = employee;
+
+            tbFirstname.Text = employee.FirstName;
+            tbLastname.Text = employee.LastName;
+            tbMiddlename.Text = employee.MiddleName;
+            cbOfficeCategory.SelectedItem = employee.OfficeCategory;
+            tbComment.Text = employee.Comment;
+        }
+
+        public void UpdateEmployee()
+        {
+            _employee.FirstName = tbFirstname.Text;
+            _employee.LastName = tbLastname.Text;
+            _employee.MiddleName = tbMiddlename.Text;
+            _employee.OfficeCategory = (Department)cbOfficeCategory.SelectedItem;
+            _employee.Comment = tbComment.Text;
         }
     }
 }
