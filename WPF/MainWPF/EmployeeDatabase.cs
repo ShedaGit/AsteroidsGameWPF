@@ -1,6 +1,7 @@
 ﻿using Database;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,11 @@ namespace MainWPF
         private string[] maleMiddlenames = { "Андреевич", "Алексеевич", "Валентинович", "Павлович", "Михайлович", "Константинович", "Владиславович" };
         private string[] femaleMiddlenames = { "Андреевна", "Алексеевна", "Валентиновна", "Павловна", "Михайловна", "Константиновна", "Владиславовна" };
 
-        public List<Employee> Employees { get; set; }
+        public ObservableCollection<Employee> Employees { get; set; }
 
         public EmployeeDatabase()
         {
-            Employees = new List<Employee>();
+            Employees = new ObservableCollection<Employee>();
             GenerateContacts(50);
         }
 

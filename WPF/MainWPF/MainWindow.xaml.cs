@@ -1,6 +1,7 @@
 ﻿using Database;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,33 +25,31 @@ namespace MainWPF
     {
         private EmployeeDatabase database = new EmployeeDatabase();
 
+        public ObservableCollection<Employee> EmployeesCollection{ get; set; }
+        public Employee SelectedEmployee { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
-            employeesListView.ItemsSource = database.Employees;
+            this.DataContext = this;
+            EmployeesCollection = database.Employees;
         }
 
         private void employeesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count != 0)
             {
-                employeesControl.SetEmployee((Employee)e.AddedItems[0]);
+                employeesControl.Employee = (Employee)SelectedEmployee.Clone();
             }
         }
 
-        private void UpdateBinding()
-        {
-            employeesListView.ItemsSource = null;
-            employeesListView.ItemsSource = database.Employees;
-        }
+        
 
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
             if (employeesListView.SelectedItems.Count < 1) return;
-
-            employeesControl.UpdateEmployee();
-            UpdateBinding();
+            database.Employees[database.Employees.IndexOf(SelectedEmployee)] = employeesControl.Employee;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -60,7 +59,6 @@ namespace MainWPF
             if (window.ShowDialog() == true)
             {
                 database.Employees.Add(window.Employee);
-                UpdateBinding();
             }
         }
 
@@ -70,8 +68,7 @@ namespace MainWPF
 
             if (MessageBox.Show("Вы действительно желаете удалить анкету сотрудника?", "Удаление анкеты", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                database.Employees.Remove((Employee)employeesListView.SelectedItems[0]);
-                UpdateBinding();
+                database.Employees.Remove(SelectedEmployee);
             }
         }
     }
