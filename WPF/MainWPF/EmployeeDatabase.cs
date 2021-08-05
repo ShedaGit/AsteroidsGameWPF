@@ -13,36 +13,12 @@ namespace MainWPF
     {
         private const string ConnectionString = @"Data Source=(local);Initial Catalog=WPF;User ID=WPF_Root;Password=321123";
 
-        private string[] maleFirstnames = { "Андрей", "Алексей", "Валентин", "Павел", "Михаил", "Константин", "Владислав" };
-        private string[] femaleFirstnames = { "Юлия", "Дарья", "Наталья", "Зиноида", "Серафима", "Анастасия", "Елена" };
-
-        private string[] maleLastnames = { "Иванов", "Смирнов", "Кузнецов", "Попов", "Васильев", "Петров", "Михайлов" };
-        private string[] femaleLastnames = { "Иванова", "Смирнова", "Кузнецова", "Попова", "Васильева", "Петрова", "Михайлова" };
-
-        private string[] maleMiddlenames = { "Андреевич", "Алексеевич", "Валентинович", "Павлович", "Михайлович", "Константинович", "Владиславович" };
-        private string[] femaleMiddlenames = { "Андреевна", "Алексеевна", "Валентиновна", "Павловна", "Михайловна", "Константиновна", "Владиславовна" };
-
         public ObservableCollection<Employee> Employees { get; set; }
 
         public EmployeeDatabase()
         {
             Employees = new ObservableCollection<Employee>();
-            GenerateContacts(50);
-            SyncToDatabase();
-        }
-
-        void SyncToDatabase()
-        {
-            var listOfAddedEmployees = new List<string>();
-            foreach (var employee in Employees)
-            {
-                //Костыльная проверка на совпадение полного имени (ФИО), потому что ФИО это Primary Key
-                if (!listOfAddedEmployees.Contains(employee.ToString()))
-                {
-                    listOfAddedEmployees.Add(employee.ToString());
-                    Add(employee);
-                }
-            }
+            LoadFromDatabase();
         }
 
         public int Add(Employee employee)
@@ -51,46 +27,76 @@ namespace MainWPF
             {
                 connection.Open();
 
+                //TODO Добавить обязательную проверку на ввод полного имени
                 string sqlExpression = $@"INSERT INTO Employees (FirstName, LastName, MiddleName, Comment, OfficeCategory)
                                      VALUES ('{employee.FirstName}', '{employee.LastName}', '{employee.MiddleName}', '{employee.Comment}', {(int)employee.OfficeCategory} )";
                 var command = new SqlCommand(sqlExpression, connection);
                 var res = command.ExecuteNonQuery();
-                //if (res > 0)
-                //{
-                //    Employees.Add(employee);
-                //}
+                if (res > 0)
+                {
+                    Employees.Add(employee);
+                }
                 return res;
             }
         }
 
-        private void GenerateContacts(int employeesCount)
+        //Пришлось добавить параметр employeeBefore, так как если нужно поменять имя, в параметр WHERE передавалось уже измененное ФИО, то есть мы изменяли то, чего нет
+        public int Update(Employee employeeBefore, Employee employeeAfter)
         {
-            Random random = new Random();
-            Employees.Clear();
-
-            string firstname = string.Empty;
-            string lastname = string.Empty;
-            string middlename = string.Empty;
-
-            while (Employees.Count < employeesCount)
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                var male = random.Next(2) == 0 ? true : false;
-                if (male)
-                {
-                    firstname = maleFirstnames[random.Next(maleFirstnames.Length)];
-                    lastname = maleLastnames[random.Next(maleLastnames.Length)];
-                    middlename = maleMiddlenames[random.Next(maleMiddlenames.Length)];
-                }
-                else
-                {
-                    firstname = femaleFirstnames[random.Next(femaleFirstnames.Length)];
-                    lastname = femaleLastnames[random.Next(femaleLastnames.Length)];
-                    middlename = femaleMiddlenames[random.Next(femaleMiddlenames.Length)];
-                }
+                connection.Open();
 
-                var officeCategory = (Department)random.Next(0, 4);
+                string sqlExpression = $@"UPDATE Employees 
+                    SET FirstName = '{employeeAfter.FirstName}', LastName = '{employeeAfter.LastName}', MiddleName = '{employeeAfter.MiddleName}', Comment = '{employeeAfter.Comment}', OfficeCategory = {(int)employeeAfter.OfficeCategory}
+                    WHERE FirstName = '{employeeBefore.FirstName}' AND LastName = '{employeeBefore.LastName}' AND MiddleName = '{employeeBefore.MiddleName}'";
+                var command = new SqlCommand(sqlExpression, connection);
+                return command.ExecuteNonQuery();
+            }
+        }
 
-                Employees.Add(new Employee(firstname, lastname, middlename, officeCategory));
+        public int Remove(Employee employee)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string sqlExpression = $@"DELETE FROM Employees WHERE FirstName = '{employee.FirstName}' AND LastName = '{employee.LastName}' AND MiddleName = '{employee.MiddleName}'";
+                var command = new SqlCommand(sqlExpression, connection);
+                var res = command.ExecuteNonQuery();
+                if (res > 0)
+                {
+                    Employees.Remove(employee);
+                }
+                return res;
+            }
+        }
+
+        private void LoadFromDatabase()
+        {
+            string sqlExpression = "SELECT * FROM Employees";
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            var contact = new Employee()
+                            {
+                                FirstName = reader.GetValue(0).ToString(),
+                                LastName = reader["LastName"].ToString(),
+                                MiddleName = reader.GetString(2),
+                                Comment = reader["Comment"].ToString(),
+                                OfficeCategory = (Department)reader.GetInt32(4)
+                            };
+                            Employees.Add(contact);
+                        }
+                    }
+                }
             }
         }
     }
