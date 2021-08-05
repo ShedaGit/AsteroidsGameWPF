@@ -44,12 +44,15 @@ namespace MainWPF
             }
         }
 
-        
-
         private void btnApply_Click(object sender, RoutedEventArgs e)
         {
             if (employeesListView.SelectedItems.Count < 1) return;
-            database.Employees[database.Employees.IndexOf(SelectedEmployee)] = employeesControl.Employee;
+            //database.Employees[database.Employees.IndexOf(SelectedEmployee)] = employeesControl.Employee;
+            if (database.Update((Employee)employeesListView.SelectedItems[0], employeesControl.Employee) > 0)
+            {
+                EmployeesCollection[EmployeesCollection.IndexOf(SelectedEmployee)] = employeesControl.Employee;
+                MessageBox.Show("Запись успешно обновлена.", "Обновление записи", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -58,7 +61,7 @@ namespace MainWPF
 
             if (window.ShowDialog() == true)
             {
-                database.Employees.Add(window.Employee);
+                database.Add(window.Employee);
             }
         }
 
@@ -66,9 +69,11 @@ namespace MainWPF
         {
             if (employeesListView.SelectedItems.Count < 1) return;
 
-            if (MessageBox.Show("Вы действительно желаете удалить анкету сотрудника?", "Удаление анкеты", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Вы действительно желаете удалить контакт?", "Удаление контакта", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                database.Employees.Remove(SelectedEmployee);
+                if (database.Remove((Employee)employeesListView.SelectedItems[0]) > 0)
+                    MessageBox.Show("Запись успешно удалена.", "Удаление записи", MessageBoxButton.OK, MessageBoxImage.Information);
+
             }
         }
     }
