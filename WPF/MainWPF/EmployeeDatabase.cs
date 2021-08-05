@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace MainWPF
 {
     class EmployeeDatabase
     {
+        private const string ConnectionString = @"Data Source=(local);Initial Catalog=WPF;User ID=WPF_Root;Password=321123";
+
         private string[] maleFirstnames = { "Андрей", "Алексей", "Валентин", "Павел", "Михаил", "Константин", "Владислав" };
         private string[] femaleFirstnames = { "Юлия", "Дарья", "Наталья", "Зиноида", "Серафима", "Анастасия", "Елена" };
 
@@ -25,6 +28,39 @@ namespace MainWPF
         {
             Employees = new ObservableCollection<Employee>();
             GenerateContacts(50);
+            SyncToDatabase();
+        }
+
+        void SyncToDatabase()
+        {
+            var listOfAddedEmployees = new List<string>();
+            foreach (var employee in Employees)
+            {
+                //Костыльная проверка на совпадение полного имени (ФИО), потому что ФИО это Primary Key
+                if (!listOfAddedEmployees.Contains(employee.ToString()))
+                {
+                    listOfAddedEmployees.Add(employee.ToString());
+                    Add(employee);
+                }
+            }
+        }
+
+        public int Add(Employee employee)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+
+                string sqlExpression = $@"INSERT INTO Employees (FirstName, LastName, MiddleName, Comment, OfficeCategory)
+                                     VALUES ('{employee.FirstName}', '{employee.LastName}', '{employee.MiddleName}', '{employee.Comment}', {(int)employee.OfficeCategory} )";
+                var command = new SqlCommand(sqlExpression, connection);
+                var res = command.ExecuteNonQuery();
+                //if (res > 0)
+                //{
+                //    Employees.Add(employee);
+                //}
+                return res;
+            }
         }
 
         private void GenerateContacts(int employeesCount)
