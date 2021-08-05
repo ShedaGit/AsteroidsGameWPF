@@ -1,7 +1,9 @@
 ﻿using Database;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,35 +21,42 @@ namespace WPF.Controls
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class EmployeeControl : UserControl
+    public partial class EmployeeControl : UserControl, INotifyPropertyChanged
     {
         private Employee _employee;
-        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public Employee Employee
+        {
+            get { return _employee; }
+            set 
+            { 
+                _employee = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public List<Department> DepartmentsList { get; set; } = new List<Department>();
+
         public EmployeeControl()
         {
             InitializeComponent();
 
-            cbOfficeCategory.ItemsSource = Enum.GetValues(typeof(Department)).Cast<Department>();
+            this.DataContext = this;
+
+            DepartmentsList.Add(Department.General);
+            DepartmentsList.Add(Department.IT);
+            DepartmentsList.Add(Department.Finance);
+            DepartmentsList.Add(Department.HR);
         }
 
-        public void SetEmployee(Employee employee)
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            _employee = employee;
-
-            tbFirstname.Text = employee.FirstName;
-            tbLastname.Text = employee.LastName;
-            tbMiddlename.Text = employee.MiddleName;
-            cbOfficeCategory.SelectedItem = employee.OfficeCategory;
-            tbComment.Text = employee.Comment;
-        }
-
-        public void UpdateEmployee()
-        {
-            _employee.FirstName = tbFirstname.Text;
-            _employee.LastName = tbLastname.Text;
-            _employee.MiddleName = tbMiddlename.Text;
-            _employee.OfficeCategory = (Department)cbOfficeCategory.SelectedItem;
-            _employee.Comment = tbComment.Text;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

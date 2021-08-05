@@ -24,14 +24,13 @@ namespace WPF.Controls
         {
             InitializeComponent();
 
-            employeeControl.SetEmployee(Employee);
+            employeeControl.Employee = Employee;
         }
 
         public Employee Employee { get; set; } = new Employee();
 
         private void btnOk_Click(object sender, RoutedEventArgs e)
         {
-            employeeControl.UpdateEmployee();
             DialogResult = true;
         }
 

@@ -12,10 +12,10 @@
         <Label x:Name="employeeLastname" Content="Фамилия:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
         <Label x:Name="employeeMiddlename" Content="Отчество:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
         <Label x:Name="officeCategoryLabel" Content="Департамент:" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbFirstname" Height="22" Margin="100,42,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbLastname" Height="22" Margin="100,72,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbMiddlename" Height="22" Margin="100,102,10,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbComment" Margin="10,162,10,10" TextWrapping="Wrap"/>
-        <ComboBox x:Name="cbOfficeCategory" Height="22" Margin="100,132,10,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Employee.FirstName}" Height="22" Margin="100,42,10,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Employee.LastName}" Height="22" Margin="100,72,10,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Employee.MiddleName}" Height="22" Margin="100,102,10,0" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Employee.Comment}" Margin="10,162,10,10" TextWrapping="Wrap"/>
+        <ComboBox ItemsSource="{Binding DepartmentsList}" Text="{Binding Employee.OfficeCategory}" Height="22" Margin="100,132,10,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

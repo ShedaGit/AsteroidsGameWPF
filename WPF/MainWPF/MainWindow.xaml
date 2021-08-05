@@ -9,10 +9,12 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
 
-        <ListView x:Name="employeesListView" Margin="10,10,420,10" SelectionMode="Single" SelectionChanged="employeesListView_SelectionChanged">
+        <ListView ItemsSource="{Binding EmployeesCollection}" SelectedItem="{Binding SelectedEmployee}" x:Name="employeesListView" Margin="10,10,420,10" SelectionMode="Single" SelectionChanged="employeesListView_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="auto" Header="Сотрудник" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Width="auto" Header="Фамилия" DisplayMemberBinding="{Binding LastName}"/>
+                    <GridViewColumn Width="auto" Header="Имя" DisplayMemberBinding="{Binding FirstName}"/>
+                    <GridViewColumn Width="auto" Header="Отчество" DisplayMemberBinding="{Binding MiddleName}"/>
                     <GridViewColumn Width="auto" Header="Департамент" DisplayMemberBinding="{Binding OfficeCategory}"/>
                 </GridView>
             </ListView.View>
