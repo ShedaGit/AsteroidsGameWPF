@@ -111,7 +111,7 @@ namespace Database
 
         public override string ToString()
         {
-            return $"{FirstName} {MiddleName} {LastName.First()}.";
+            return $"{FirstName} {MiddleName} {LastName}";
         }
 
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
