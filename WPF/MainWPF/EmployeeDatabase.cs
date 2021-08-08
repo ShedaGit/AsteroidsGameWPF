@@ -1,11 +1,11 @@
-﻿using Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WPF.Communication.WpfService;
 
 namespace MainWPF
 {

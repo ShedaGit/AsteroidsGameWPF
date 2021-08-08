@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.WebService", "WPF.WebService\WPF.WebService.csproj", "{B5430964-617A-46CD-9A19-DDE9A828E427}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Communication", "WPF.Communication\WPF.Communication.csproj", "{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5430964-617A-46CD-9A19-DDE9A828E427} = {B5430964-617A-46CD-9A19-DDE9A828E427}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

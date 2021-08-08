@@ -88,9 +88,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Database\WPF.Data.csproj">
-      <Project>{3FB03924-481F-40FF-9459-08387A09BCD2}</Project>
-      <Name>WPF.Data</Name>
+    <ProjectReference Include="..\WPF.Communication\WPF.Communication.csproj">
+      <Project>{bad64d93-f4f7-4dff-af2d-242807727ed7}</Project>
+      <Name>WPF.Communication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
