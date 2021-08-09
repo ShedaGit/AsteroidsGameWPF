@@ -19,7 +19,7 @@ namespace WPF.WebService
     // [System.Web.Script.Services.ScriptService]
     public class WpfService : System.Web.Services.WebService
     {
-        private const string ConnectionString = @"Data Source=(local);Initial Catalog=WPF;User ID=WPF_Root;Password=321123";
+        private string ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["WpfConnectionString"].ConnectionString;
 
         [WebMethod]
         public int Add(Employee employee)
