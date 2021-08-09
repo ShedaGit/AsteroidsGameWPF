@@ -37,8 +37,15 @@ namespace WPF.WebService
             }
         }
 
+        /// <summary>
+        /// Метод для обноврения БД
+        /// Пришлось добавить параметр employeeBefore, так как если нужно поменять имя,
+        /// в параметр WHERE передавалось уже измененное ФИО, то есть мы изменяли то, чего нет
+        /// </summary>
+        /// <param name="employeeBefore">Выбираются основые парамерты первичного ключа ДО обновления, их можно выбрать при выделении сотрудника</param>
+        /// <param name="employeeAfter">Обновление всех параметров в соответствии с заполненной формой</param>
+        /// <returns></returns>
         [WebMethod]
-        //Пришлось добавить параметр employeeBefore, так как если нужно поменять имя, в параметр WHERE передавалось уже измененное ФИО, то есть мы изменяли то, чего нет
         public int Update(Employee employeeBefore, Employee employeeAfter)
         {
             using (SqlConnection connection = new SqlConnection(ConnectionString))
