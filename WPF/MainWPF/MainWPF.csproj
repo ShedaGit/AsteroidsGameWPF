@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -96,9 +97,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Database\WPF.Data.csproj">
-      <Project>{3fb03924-481f-40ff-9459-08387a09bcd2}</Project>
-      <Name>WPF.Data</Name>
+    <ProjectReference Include="..\WPF.Communication\WPF.Communication.csproj">
+      <Project>{bad64d93-f4f7-4dff-af2d-242807727ed7}</Project>
+      <Name>WPF.Communication</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPF.Controls\WPF.Controls.csproj">
       <Project>{E0E7E757-85D5-417D-8E85-886CDFA8706B}</Project>

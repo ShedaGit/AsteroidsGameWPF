@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Data", "Database\WPF.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Controls", "WPF.Controls\WPF.Controls.csproj", "{E0E7E757-85D5-417D-8E85-886CDFA8706B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.WebService", "WPF.WebService\WPF.WebService.csproj", "{B5430964-617A-46CD-9A19-DDE9A828E427}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Communication", "WPF.Communication\WPF.Communication.csproj", "{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5430964-617A-46CD-9A19-DDE9A828E427} = {B5430964-617A-46CD-9A19-DDE9A828E427}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +34,14 @@ Global
 		{E0E7E757-85D5-417D-8E85-886CDFA8706B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0E7E757-85D5-417D-8E85-886CDFA8706B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0E7E757-85D5-417D-8E85-886CDFA8706B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5430964-617A-46CD-9A19-DDE9A828E427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5430964-617A-46CD-9A19-DDE9A828E427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5430964-617A-46CD-9A19-DDE9A828E427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5430964-617A-46CD-9A19-DDE9A828E427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD64D93-F4F7-4DFF-AF2D-242807727ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
