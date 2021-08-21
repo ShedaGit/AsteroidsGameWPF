@@ -39,10 +39,10 @@ namespace MainWPF
 
         public int Remove(Employee employee)
         {
-            var res = wpfServiceSoapClient.Add(employee);
+            var res = wpfServiceSoapClient.Remove(employee);
             if (res > 0)
             {
-                Employees.Add(employee);
+                Employees.Remove(employee);
             }
             return res;
         }

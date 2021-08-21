@@ -32,7 +32,7 @@ namespace MainWPF
         {
             InitializeComponent();
 
-            this.DataContext = this;
+            //this.DataContext = this;
             EmployeesCollection = database.Employees;
         }
 
